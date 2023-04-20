@@ -1,15 +1,26 @@
 <template>
     <div>
-        List {{  $route.params.id }}
+        <div v-if="list">
+          {{  list.title }}
+        </div>
     </div>
 </template>
 
 <script setup>
+import { useDocument } from 'vuefire'
+import { collection, doc } from 'firebase/firestore'
+
 definePageMeta({
   middleware: ['auth'],
 })
 
 const route = useRoute()
-// When accessing /posts/1, route.params.id will be 1
-console.log(route.params.id)
+
+const firestore = useFirestore()
+
+const listSource = computed(
+  () => doc(collection(firestore, 'lists'), route.params.id)
+)
+
+const list = useDocument(listSource)
 </script>

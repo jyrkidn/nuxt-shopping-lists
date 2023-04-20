@@ -1,14 +1,14 @@
 <template>
     <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-4">
         <div class="bg-white rounded-lg flex justify-between" v-for="list in lists" :key="list.id">
-            <a :href="`/lists/${list.id}`" class="grow block p-3 flex items-center">
+            <NuxtLink :to="`/lists/${list.id}`" class="grow block p-3 flex items-center">
                 <span>{{ list.title }}</span>
                 <span class="text-slate-400 text-xs ml-2">{{ list.items.length }}</span>
-            </a>
+            </NuxtLink>
         </div>
-        <a href="/lists/create" class="bg-white block p-3 rounded-lg">
+        <NuxtLink to="/lists/create" class="bg-white block p-3 rounded-lg">
 			+ Add
-		</a>
+		</NuxtLink>
     </div>
 </template>
 
@@ -20,5 +20,7 @@ definePageMeta({
   middleware: ['auth'],
 })
 
-const lists = useCollection(collection(db, 'lists'))
+const firestore = useFirestore()
+
+const lists = useCollection(collection(firestore, 'lists'))
 </script>
