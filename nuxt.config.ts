@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   modules: [
     // ... other modules
     'nuxt-vuefire',
+    '@pinia/nuxt',
   ],
 
   css: ['~/assets/css/main.css'],

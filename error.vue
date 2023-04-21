@@ -17,39 +17,30 @@
 
     </nav>
 
-    <NuxtPage />
+    <div>
+        {{  error.message }}
+    </div>
   </main>
 </template>
 
 <script setup>
 import { signOut } from "firebase/auth"
 
-const router = useRouter()
-const route = useRoute()
 const user = useCurrentUser()
 const auth = useFirebaseAuth()
+
+defineProps({
+  'error': {
+    type: Object,
+    required: true
+  }
+})
 
 useHead({
   title: 'Shopping List',
   htmlAttrs: {
     class: 'bg-red-50'
   }
-})
-
-// we don't need this watcher on server
-onMounted(() => {
-  watch(user, (user, prevUser) => {
-    if (prevUser && !user) {
-      // user logged out
-      router.push('/login')
-    } else if (user && typeof route.query.redirect === 'string') {
-      // user logged in and has a redirect query
-      router.push(route.query.redirect)
-    }  else if (user) {
-      // user logged in
-      router.push('/')
-    }
-  })
 })
 
 const doSignOut = () => {

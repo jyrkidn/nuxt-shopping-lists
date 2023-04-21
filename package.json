@@ -16,8 +16,12 @@
     "tailwindcss": "^3.3.1"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.9",
     "firebase": "^9.20.0",
     "nuxt-vuefire": "^0.1.6",
+    "pinia": "^2.0.35",
+    "sortablejs": "^1.15.0",
+    "sortablejs-vue3": "^1.2.9",
     "vuefire": "^3.1.0"
   }
 }
