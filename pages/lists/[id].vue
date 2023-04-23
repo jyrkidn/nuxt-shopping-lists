@@ -26,9 +26,7 @@
           item-key="id"
           tag="div"
           @end="sorting"
-          :options="{
-            handle: '.sort-handle'
-          }"
+          :options="sortableOptions"
         >
           <template #item="{ element }">
             <div class="draggable flex my-2 items-center w-full" :key="element.id">
@@ -90,6 +88,18 @@ definePageMeta({
   middleware: ['auth'],
 })
 
+const sortableOptions = {
+  handle: '.sort-handle',
+  animation: 150,
+  ghostClass: "ghost",
+  dragClass: "drag",
+  scroll: true,
+  forceFallback: true,
+  scrollSensitivity: 50,
+  scrollSpeed: 10,
+  bubbleScroll: true,
+}
+
 const route = useRoute()
 
 const firestore = useFirestore()
@@ -150,24 +160,32 @@ const toggleIsBought = async (id, currentValue) => {
 }
 
 const sorting = async (event) => {
-  let start = event.oldIndex
-  let end = event.newIndex + 1
+  const itemsToUpdate = [...items.value]
 
-  // get all items before newIndex and update those with new sort_order
-  if (event.oldIndex > event.newIndex) {
-    start = event.newIndex
-    end = event.oldIndex + 1
-  }
+  const item = itemsToUpdate.splice(event.oldIndex, 1)[0]
 
-  const itemsToUpdate = items.value.slice(start, end)
+  itemsToUpdate
+    .splice(event.newIndex, 0, item)
 
   const batch = writeBatch(firestore)
 
-  itemsToUpdate.forEach(async (item, index) => {
-    // batch.update(doc(itemsRef, item.id), {sort_order: "New York City"});
-    console.log({ current: item.sort_order, new: itemsToUpdate })
-  })
+  itemsToUpdate.map((item, index) => {
+      const itemRef = doc(firestore, 'lists', route.params.id, 'items', item.id)
+      batch.update(itemRef, {"sort_order": itemsToUpdate.length - index})
+    })
 
   await batch.commit();
 }
 </script>
+
+<style>
+/* @TODO: replace with tailwind */
+.ghost {
+  opacity: 0.5;
+  background: #fff;
+  border: 1px dashed #ccc;
+}
+.drag {
+  background: #f5f5f5;
+}
+</style>

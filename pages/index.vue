@@ -3,7 +3,6 @@
         <div class="bg-white rounded-lg flex justify-between" v-for="list in lists" :key="list.id">
             <NuxtLink :to="`/lists/${list.id}`" class="grow block p-3 flex items-center">
                 <span>{{ list.title }}</span>
-                <span class="text-slate-400 text-xs ml-2">{{ list.items.length }}</span>
             </NuxtLink>
         </div>
         <NuxtLink to="/lists/create" class="bg-white block p-3 rounded-lg">
