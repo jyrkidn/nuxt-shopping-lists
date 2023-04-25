@@ -1,58 +1,16 @@
 <template>
   <main class="px-5 py-5">
-    <nav class="flex">
-      <a href="/">
-        <h1 class="text-3xl mb-6">Lists</h1>
-      </a>
-
-      <div v-if="user">
-        Hello, {{ user.email }}
-        <button type="button" @click="doSignOut">
-          Sign Out
-        </button>
-      </div>
-      <div v-else>
-        <NuxtLink to="/login">Login</NuxtLink>
-      </div>
-
-    </nav>
+    <Header />
 
     <NuxtPage />
   </main>
 </template>
 
 <script setup>
-import { signOut } from "firebase/auth"
-
-const router = useRouter()
-const route = useRoute()
-const user = useCurrentUser()
-const auth = useFirebaseAuth()
-
 useHead({
   title: 'Shopping List',
   htmlAttrs: {
     class: 'bg-red-50'
   }
 })
-
-// we don't need this watcher on server
-onMounted(() => {
-  watch(user, (user, prevUser) => {
-    if (prevUser && !user) {
-      // user logged out
-      router.push('/login')
-    } else if (user && typeof route.query.redirect === 'string') {
-      // user logged in and has a redirect query
-      router.push(route.query.redirect)
-    }  else if (user) {
-      // user logged in
-      router.push('/')
-    }
-  })
-})
-
-const doSignOut = () => {
-    signOut(auth)
-}
 </script>
