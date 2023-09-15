@@ -9,6 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@nuxt/devtools": "^0.8.3",
     "@types/node": "^18",
     "autoprefixer": "^10.4.14",
     "firebase-admin": "^11.7.0",
